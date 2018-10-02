@@ -1,4 +1,4 @@
-import { FETCH_PICTURES , FETCH_TAGS, FETCH_NEW_TAGS } from './types';
+import { FETCH_PICTURES , FETCH_NEW_PICTURES } from './types';
 import axios from 'axios';
 
 const API_KEY = '3e8ed4a38ad3cfc063639ef340dc3cfc';
@@ -13,10 +13,6 @@ export function fetchPictures (searchTerm, page, newRequest = true) {
     return (dispatch) => {
         axios.get(photosUrl)
         .then(response => {
-            dispatch({
-                type: FETCH_PICTURES,
-                payload: response
-            });
 
             response.data.photos.photo.map(photo => {
 
@@ -26,16 +22,17 @@ export function fetchPictures (searchTerm, page, newRequest = true) {
                 
                 axios.get(tagUrl)
                 .then(response => {
+                    
                     if (!newRequest) {
                         dispatch({
-                            type: FETCH_TAGS,
-                            payload: response
+                            type: FETCH_PICTURES,
+                            payload: { photo: photo, tags: response.data.photo }
                         });
                     } else {
                         newRequest = false;
                         dispatch({
-                            type: FETCH_NEW_TAGS,
-                            payload: response
+                            type: FETCH_NEW_PICTURES,
+                            payload: { photo: photo, tags: response.data.photo }
                         });
                     }
                 });

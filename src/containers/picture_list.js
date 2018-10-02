@@ -9,16 +9,19 @@ class PictureList extends Component {
         this.renderPicture = this.renderPicture.bind(this);
     }
 
-    renderOwner(index) {
+    renderOwner(photoItem) {
+        const owner = photoItem.tags.owner;
+        console.log(owner);
+        
 
-        if (!this.props.tags[index]) {
+        if (!owner) {
             return <p className="card-text"></p>;
         }
 
-        const userName = this.props.tags[index].owner.realname;
-        const icon_farm = this.props.tags[index].owner.iconfarm;
-        const icon_serv = this.props.tags[index].owner.iconserver;
-        const user_id = this.props.tags[index].owner.nsid;
+        const userName = owner.realname;
+        const icon_farm = owner.iconfarm;
+        const icon_serv = owner.iconserver;
+        const user_id = owner.nsid;
         let userImage;
         
         if (icon_farm !== 0) {
@@ -35,24 +38,27 @@ class PictureList extends Component {
         );
     }
 
-    renderTags(index) {
-        if (!this.props.tags[index]) {
+    renderTags(photoItem) {
+        const _tags = photoItem.tags;
+
+        if (!_tags) {
             return <div></div>;
         }
 
-        const tags = this.props.tags[index].tags.tag.map(tag => {
+        const tags = _tags.tags.tag.map(tag => {
             return <span key={tag.id} className="badge badge-secondary">{tag._content}</span>
         });
 
         return(
             <div>
                 <p className="card-text">{tags}</p>
-                <p className="card-text"><small className="text-muted">{this.props.tags[index].dates.taken}</small></p>
+                <p className="card-text"><small className="text-muted">{_tags.dates.taken}</small></p>
             </div>
         );
     }
 
-    renderPicture(photo, index) {
+    renderPicture(photoItem) {
+        const photo = photoItem.photo;
         const photoUrl = `http://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
         const blankUrl = `https://www.flickr.com/photos/${photo.owner}/${photo.id}`
 
@@ -61,9 +67,9 @@ class PictureList extends Component {
                 <a href={blankUrl} className="card-link" target="_blank">
                     <img className="card-img-top img-fluid" src={photoUrl} alt={photo.title}/>
                     <div className="card-block">
-                        {this.renderOwner(index)}
+                        {this.renderOwner(photoItem)}
                         <h3 className="card-title">{photo.title}</h3>
-                        {this.renderTags(index)}
+                        {this.renderTags(photoItem)}
                     </div>
                 </a>
             </div>
@@ -80,9 +86,10 @@ class PictureList extends Component {
 }
 
 function mapStateToProps(state) {
+    console.log(state);
+    
     return {
-        pictures: state.pictures,
-        tags: state.tags
+        pictures: state.pictures
     };
 }
 
