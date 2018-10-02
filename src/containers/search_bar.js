@@ -32,7 +32,7 @@ class SearchBar extends Component {
                         className="form-control"
                         placeholder="Serch for a picture"/>
                     <div className="input-group-append">
-                        <button className="btn btn-outline-secondary" type="submit">Button</button>
+                        <button className="btn btn-outline-secondary" type="submit">Search</button>
                     </div>
                 </div>
             </form>
