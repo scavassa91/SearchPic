@@ -18,7 +18,7 @@ class SearchBar extends Component {
 
     onFormSubmit(event) {
         event.preventDefault();
-        this.props.fetchPictures(this.state.term, 1);
+        this.props.fetchPictures(this.state.term, 1 , true);
     }
     
     render() {
