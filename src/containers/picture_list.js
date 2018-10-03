@@ -85,8 +85,10 @@ class PictureList extends Component {
 
     render() {
         return (
-            <div className="card-columns" ref="iScroll">
-                {this.props.pictures.map(this.renderPicture)}
+            <div className="container hold-list">
+                <div className="card-columns">
+                    {this.props.pictures.map(this.renderPicture)}
+                </div>
             </div>
         );
     }

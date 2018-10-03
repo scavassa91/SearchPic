@@ -12,6 +12,9 @@ const PER_PAGE = 20;
 
 export function fetchPictures (searchTerm, type = 'text', page, newRequest = true) {
 
+    if (searchTerm === '')
+        searchTerm = 'Surfboards';
+
     const photosUrl = `${ROOT_URL}&method=${PHOTOS_METHOD}&${type}=${searchTerm}&per_page=${PER_PAGE}&page=${page}&format=json&nojsoncallback=1`;
     
     return (dispatch) => {

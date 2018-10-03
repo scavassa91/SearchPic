@@ -12,27 +12,28 @@ class SearchBar extends Component {
         this.state = { 
             term: '',
             lastTerm: 'Surfboards',
-            page: 1,
             searchType: 'text',
-            lastSearchType: 'text'
+            lastSearchType: 'text',
+            page: 1,
         }
     }
 
     componentDidMount() {
-        this.props.fetchPictures(this.state.lastTerm, this.state.searchType, this.state.page , true);
+        this.props.fetchPictures(this.state.lastTerm, this.state.lastSearchType, this.state.page , true);
 
-        window.addEventListener("scroll", () => {
-            
-            var scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-            var scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
-            var clientHeight = document.documentElement.clientHeight || window.innerHeight;
-            var scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+        window.addEventListener("scroll", () => this.handleScroll());
+    }
 
-            if (scrolledToBottom) {
-                this.setState({ page: this.state.page + 1 });
-                this.loadMorePicture();
-            }
-        });
+    handleScroll() {
+        var scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+        var scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
+        var clientHeight = document.documentElement.clientHeight || window.innerHeight;
+        var scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+
+        if (scrolledToBottom) {
+            this.setState({ page: this.state.page + 1 });
+            this.loadMorePicture();
+        }
     }
 
     loadMorePicture() {
@@ -55,6 +56,7 @@ class SearchBar extends Component {
             lastSearchType: this.state.searchType,
             page: 1
         });
+        window.scrollTo(0, 0);
         this.props.fetchPictures(this.state.term, this.state.lastSearchType, this.state.page , true);
     }
     
@@ -81,7 +83,7 @@ class SearchBar extends Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener('scroll');
+        window.removeEventListener("scroll", () => this.handleScroll());
     }
 }
 
