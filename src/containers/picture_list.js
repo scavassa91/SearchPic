@@ -8,13 +8,19 @@ class PictureList extends Component {
 
     constructor(props) {
         super(props)
-
+        
+        // Bind the context this into renderPicture function
         this.renderPicture = this.renderPicture.bind(this);
     }
 
+    /**
+     * Render the owner name and icon
+     * @param {Object} photoItem 
+     */
     renderOwner(photoItem) {
         const owner = photoItem.tags.owner;
         
+        // Verify if the owner already exists before rendering
         if (!owner) {
             return <p className="card-text"></p>;
         }
@@ -27,6 +33,7 @@ class PictureList extends Component {
         
         let userImage;
         
+        // Verify if the icon farm exists if it's not show a default icon
         if (icon_farm !== 0) {
             userImage = `http://farm${icon_farm}.staticflickr.com/${icon_serv}/buddyicons/${user_id}.jpg`;
         } else {
@@ -41,17 +48,24 @@ class PictureList extends Component {
         );
     }
 
+    /**
+     * Render photo tags and taken date
+     * @param {Object} photoItem 
+     */
     renderTags(photoItem) {
         const _tags = photoItem.tags;
 
+        // Verify if the tags exists before rendering
         if (!_tags) {
             return <div></div>;
         }
 
+        // Create de array of tags to be render
         const tags = _tags.tags.tag.map(tag => {
             return <span key={tag.id} className="badge badge-custom">{tag._content}</span>
         });
         
+        // Adjust date
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const date = new Date(_tags.dates.taken);
         const stringDate = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
@@ -64,9 +78,15 @@ class PictureList extends Component {
         );
     }
 
+    /**
+     * Render the picture and the title
+     * @param {Object} photoItem 
+     */
     renderPicture(photoItem) {
         const photo = photoItem.photo;
+        // Create the image url
         const photoUrl = `http://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
+        // Create the image url link to flickr
         const blankUrl = `https://www.flickr.com/photos/${photo.owner}/${photo.id}`
 
         return (
@@ -94,12 +114,14 @@ class PictureList extends Component {
     }
 }
 
+// Transform redux state into an object the will be the props of this container
 function mapStateToProps(state) {
     return {
         pictures: state.pictures
     };
 }
 
+// Transform the actions into a props function for this container
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({fetchPictures}, dispatch);
 }

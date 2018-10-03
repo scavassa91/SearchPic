@@ -19,11 +19,16 @@ class SearchBar extends Component {
     }
 
     componentDidMount() {
+        // Make the first request using text surfboards
         this.props.fetchPictures(this.state.lastTerm, this.state.lastSearchType, this.state.page , true);
 
+        // Add the scroll event listener
         window.addEventListener("scroll", () => this.handleScroll());
     }
 
+    /**
+     * Handler to verify when the page is at the bottom
+     */
     handleScroll() {
         var scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
         var scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
@@ -36,19 +41,33 @@ class SearchBar extends Component {
         }
     }
 
+    /**
+     * Make the infinity sroll request
+     */
     loadMorePicture() {
-        this.setState({ requestSent: true});
         this.props.fetchPictures(this.state.lastTerm, this.state.lastSearchType, this.state.page, false);
     }
 
+    /**
+     * Update the local term state
+     * @param {Event} event 
+     */
     onInputChange(event) {
         this.setState({ term: event.target.value });
     }
 
+    /**
+     * Update the local searchType state
+     * @param {Event} event 
+     */
     onSelectChange(event) {
         this.setState({ searchType: event.target.value });
     }
 
+    /**
+     * Update the local state, scroll to top and make the request
+     * @param {Event} event 
+     */
     onFormSubmit(event) {
         event.preventDefault();
         this.setState({
@@ -82,11 +101,15 @@ class SearchBar extends Component {
         );
     }
 
+    /**
+     * Remove scroll event listener before the container unmount
+     */
     componentWillUnmount() {
         window.removeEventListener("scroll", () => this.handleScroll());
     }
 }
 
+// Transform the actions into a props function for this container
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ fetchPictures }, dispatch);
 }
