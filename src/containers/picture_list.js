@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import { fetchPictures } from '../actions';
 
 class PictureList extends Component {
 
@@ -82,7 +85,7 @@ class PictureList extends Component {
 
     render() {
         return (
-            <div className="card-columns">
+            <div className="card-columns" ref="iScroll">
                 {this.props.pictures.map(this.renderPicture)}
             </div>
         );
@@ -95,4 +98,8 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(PictureList);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({fetchPictures}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PictureList);

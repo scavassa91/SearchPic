@@ -9,11 +9,36 @@ class SearchBar extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { term: '' };
+        this.state = { 
+            term: '',
+            lastTerm: '',
+            page: 1,
+            requestSent: false
+        }
     }
 
     componentDidMount() {
-        this.props.fetchPictures('Surfboards', 1 , true);
+        this.props.fetchPictures('', this.state.page , true);
+
+        window.addEventListener("scroll", () => {
+            
+            var scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+            var scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
+            var clientHeight = document.documentElement.clientHeight || window.innerHeight;
+            var scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+
+            if (scrolledToBottom) {
+                this.setState({ page: this.state.page + 1 });
+                this.loadMorePicture();
+            }
+        });
+    }
+
+    loadMorePicture() {
+        if (!this.state.requestSent) {
+            this.setState({ requestSent: true});
+            this.props.fetchPictures(this.state.lastTerm, this.state.page, false);
+        }
     }
 
     onInputChange(event) {
@@ -22,7 +47,11 @@ class SearchBar extends Component {
 
     onFormSubmit(event) {
         event.preventDefault();
-        this.props.fetchPictures(this.state.term, 1 , true);
+        this.setState({
+            lastTerm: this.state.term,
+            page: 1
+        });
+        this.props.fetchPictures(this.state.term, this.state.page , true);
     }
     
     render() {
@@ -41,6 +70,10 @@ class SearchBar extends Component {
                 </div>
             </form>
         );
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll');
     }
 }
 

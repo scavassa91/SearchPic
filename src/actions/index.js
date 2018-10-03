@@ -1,4 +1,7 @@
-import { FETCH_PICTURES , FETCH_NEW_PICTURES } from './types';
+import { 
+    FETCH_PICTURES ,
+    FETCH_NEW_PICTURES
+} from './types';
 import axios from 'axios';
 
 const API_KEY = '3e8ed4a38ad3cfc063639ef340dc3cfc';
@@ -8,6 +11,11 @@ const ROOT_URL = `https://api.flickr.com/services/rest/?api_key=${API_KEY}`;
 const PER_PAGE = 20;
 
 export function fetchPictures (searchTerm, page, newRequest = true) {
+
+    if (searchTerm === '') {
+        searchTerm = 'Surfboards';
+    }
+
     const photosUrl = `${ROOT_URL}&method=${PHOTOS_METHOD}&text=${searchTerm}&per_page=${PER_PAGE}&page=${page}&format=json&nojsoncallback=1`;
     
     return (dispatch) => {
