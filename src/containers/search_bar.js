@@ -11,14 +11,15 @@ class SearchBar extends Component {
 
         this.state = { 
             term: '',
-            lastTerm: '',
+            lastTerm: 'Surfboards',
             page: 1,
-            requestSent: false
+            searchType: 'text',
+            lastSearchType: 'text'
         }
     }
 
     componentDidMount() {
-        this.props.fetchPictures('', this.state.page , true);
+        this.props.fetchPictures(this.state.lastTerm, this.state.searchType, this.state.page , true);
 
         window.addEventListener("scroll", () => {
             
@@ -35,29 +36,36 @@ class SearchBar extends Component {
     }
 
     loadMorePicture() {
-        if (!this.state.requestSent) {
-            this.setState({ requestSent: true});
-            this.props.fetchPictures(this.state.lastTerm, this.state.page, false);
-        }
+        this.setState({ requestSent: true});
+        this.props.fetchPictures(this.state.lastTerm, this.state.lastSearchType, this.state.page, false);
     }
 
     onInputChange(event) {
         this.setState({ term: event.target.value });
     }
 
+    onSelectChange(event) {
+        this.setState({ searchType: event.target.value });
+    }
+
     onFormSubmit(event) {
         event.preventDefault();
         this.setState({
             lastTerm: this.state.term,
+            lastSearchType: this.state.searchType,
             page: 1
         });
-        this.props.fetchPictures(this.state.term, this.state.page , true);
+        this.props.fetchPictures(this.state.term, this.state.lastSearchType, this.state.page , true);
     }
     
     render() {
         return (
             <form onSubmit={event => this.onFormSubmit(event)} className="form-group">
                 <div className="input-group">
+                    <select onChange={event => this.onSelectChange(event)} className="custom-select select-search-type">
+                        <option value="text">Text</option>
+                        <option value="tags">Tag</option>
+                    </select>
                     <input
                         onChange={event => this.onInputChange(event)}
                         value={this.state.term}

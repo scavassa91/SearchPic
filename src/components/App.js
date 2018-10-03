@@ -12,10 +12,10 @@ class App extends Component {
         <header>
           <div className="container">
             <div className="row">
-              <div className="col-sm-2">
+              <div className="col-sm-2 hold-logo">
                 <img className="img-fluid" src={SearchPic} alt="SearchPic"/>
               </div>
-              <div className="col-sm-10">
+              <div className="col-sm-10 hold-search">
                 <SearchBar />
               </div>
             </div>

@@ -8,14 +8,29 @@ body {
 header {
   background-color: #36465d;
   padding: 1rem 0;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+}
+
+.hold-logo {
+  padding-left: 0 !important;
+}
+
+.hold-search {
+  padding-right: 0 !important;
 }
 
 form {
   margin: 0 !important;
 }
 
+.select-search-type {
+  flex: 0.1 !important;
+}
+
 .hold-list {
-  padding: 1rem 0;
+  padding: 6rem 0 1rem 0;
 }
 
 .card:hover {
