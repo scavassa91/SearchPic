@@ -11,28 +11,28 @@ class PictureList extends Component {
 
     renderOwner(photoItem) {
         const owner = photoItem.tags.owner;
-        console.log(owner);
         
-
         if (!owner) {
             return <p className="card-text"></p>;
         }
 
-        const userName = owner.realname;
+        let userName;
+        !owner.realname ? userName = owner.username : userName = owner.realname;
         const icon_farm = owner.iconfarm;
         const icon_serv = owner.iconserver;
         const user_id = owner.nsid;
+        
         let userImage;
         
         if (icon_farm !== 0) {
             userImage = `http://farm${icon_farm}.staticflickr.com/${icon_serv}/buddyicons/${user_id}.jpg`;
         } else {
-            userImage = 'https://www.flickr.com/images/buddyicon.gif';
+            userImage = 'https://s.yimg.com/pw/images/buddyicon03_l.png';
         }
         
         return(
-            <p className="card-text">
-                <img src={userImage} className="rounded-circle" alt={userName} />
+            <p className="card-text card-text-user">
+                <img src={userImage} className="rounded-circle card-img-user" alt={userName} />
                 <span>{userName}</span>
             </p>
         );
@@ -46,13 +46,17 @@ class PictureList extends Component {
         }
 
         const tags = _tags.tags.tag.map(tag => {
-            return <span key={tag.id} className="badge badge-secondary">{tag._content}</span>
+            return <span key={tag.id} className="badge badge-custom">{tag._content}</span>
         });
+        
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const date = new Date(_tags.dates.taken);
+        const stringDate = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
 
         return(
             <div>
                 <p className="card-text">{tags}</p>
-                <p className="card-text"><small className="text-muted">{_tags.dates.taken}</small></p>
+                <p className="card-text"><small className="text-muted">Taken on {stringDate}</small></p>
             </div>
         );
     }
@@ -65,10 +69,10 @@ class PictureList extends Component {
         return (
             <div key={photo.id} className="card">
                 <a href={blankUrl} className="card-link" target="_blank">
-                    <img className="card-img-top img-fluid" src={photoUrl} alt={photo.title}/>
+                    {this.renderOwner(photoItem)}
+                    <img className="card-img-top img-fluid card-img" src={photoUrl} alt={photo.title}/>
                     <div className="card-block">
-                        {this.renderOwner(photoItem)}
-                        <h3 className="card-title">{photo.title}</h3>
+                        <h5 className="card-title">{photo.title}</h5>
                         {this.renderTags(photoItem)}
                     </div>
                 </a>
@@ -86,8 +90,6 @@ class PictureList extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state);
-    
     return {
         pictures: state.pictures
     };

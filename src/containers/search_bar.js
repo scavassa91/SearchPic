@@ -12,6 +12,10 @@ class SearchBar extends Component {
         this.state = { term: '' };
     }
 
+    componentDidMount() {
+        this.props.fetchPictures('Surfboards', 1 , true);
+    }
+
     onInputChange(event) {
         this.setState({ term: event.target.value });
     }
@@ -24,7 +28,7 @@ class SearchBar extends Component {
     render() {
         return (
             <form onSubmit={event => this.onFormSubmit(event)} className="form-group">
-                <div className="input-group mb-3">
+                <div className="input-group">
                     <input
                         onChange={event => this.onInputChange(event)}
                         value={this.state.term}
