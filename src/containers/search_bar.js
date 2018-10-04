@@ -12,8 +12,8 @@ class SearchBar extends Component {
         this.state = { 
             term: '',
             lastTerm: 'Surfboards',
-            searchType: 'text',
-            lastSearchType: 'text',
+            searchType: 'tags',
+            lastSearchType: 'tags',
             page: 1,
         }
     }
@@ -84,8 +84,8 @@ class SearchBar extends Component {
             <form onSubmit={event => this.onFormSubmit(event)} className="form-group">
                 <div className="input-group">
                     <select onChange={event => this.onSelectChange(event)} className="custom-select select-search-type">
-                        <option value="text">Text</option>
                         <option value="tags">Tag</option>
+                        <option value="text">Text</option>
                     </select>
                     <input
                         onChange={event => this.onInputChange(event)}
