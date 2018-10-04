@@ -1,2 +1,4 @@
 export const FETCH_PICTURES = 'FETCH_PICTURES';
 export const FETCH_NEW_PICTURES = 'FETCH_NEW_TAGS';
+export const NOT_FOUND = 'NOT_FOUND';
+export const REQUEST_ERROR = 'REQUEST_ERROR';

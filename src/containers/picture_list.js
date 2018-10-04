@@ -82,32 +82,46 @@ class PictureList extends Component {
      * Render the picture and the title
      * @param {Object} photoItem 
      */
-    renderPicture(photoItem) {
-        const photo = photoItem.photo;
-        // Create the image url
-        const photoUrl = `http://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
-        // Create the image url link to flickr
-        const blankUrl = `https://www.flickr.com/photos/${photo.owner}/${photo.id}`
+    renderPicture(pictures) {
+        if (pictures.error) {
+            return <div className="error">{pictures.error}</div>;
+        } else  if (pictures.length === 0) {
+            return <div className="error">Loading...</div>;
+        } else if (pictures === 'not-found') {
+            return <div className="error">Oops! There are no matches for your search</div>;
+        } 
 
-        return (
-            <div key={photo.id} className="card">
-                <a href={blankUrl} className="card-link" target="_blank">
-                    {this.renderOwner(photoItem)}
-                    <img className="card-img-top img-fluid card-img" src={photoUrl} alt={photo.title}/>
-                    <div className="card-block">
-                        <h5 className="card-title">{photo.title}</h5>
-                        {this.renderTags(photoItem)}
-                    </div>
-                </a>
-            </div>
-        );
+        let cards = pictures.map((photoItem) => {
+            const photo = photoItem.photo;
+            // Create the image url
+            const photoUrl = `http://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
+            // Create the image url link to flickr
+            const blankUrl = `https://www.flickr.com/photos/${photo.owner}/${photo.id}`;
+
+            return (
+                <div key={photo.id} className="card">
+                    <a href={blankUrl} className="card-link" target="_blank">
+                        {this.renderOwner(photoItem)}
+                        <img className="card-img-top img-fluid card-img" src={photoUrl} alt={photo.title}/>
+                        <div className="card-block">
+                            <h5 className="card-title">{photo.title}</h5>
+                            {this.renderTags(photoItem)}
+                        </div>
+                    </a>
+                </div>
+            );
+        });
+        
+        return cards;
+        
     }
 
     render() {
         return (
             <div className="container hold-list">
                 <div className="card-columns">
-                    {this.props.pictures.map(this.renderPicture)}
+                    {/* {this.props.pictures.map(this.renderPicture)} */}
+                    {this.renderPicture(this.props.pictures)}
                 </div>
             </div>
         );

@@ -1,6 +1,8 @@
 import { 
     FETCH_PICTURES ,
-    FETCH_NEW_PICTURES
+    FETCH_NEW_PICTURES,
+    NOT_FOUND,
+    REQUEST_ERROR
 } from './types';
 import axios from 'axios';
 
@@ -29,6 +31,21 @@ export function fetchPictures (searchTerm, type = 'text', page, newRequest = tru
     return (dispatch) => {
         axios.get(photosUrl)
         .then(response => {
+
+            if (response.data.stat === 'fail') {
+                dispatch({
+                    type: REQUEST_ERROR,
+                    payload: { error: response.data.message }
+                });
+                return;
+            }
+
+            if (response.data.photos.photo.length === 0) {
+                dispatch({
+                    type: NOT_FOUND,
+                    payload: 'not-found'
+                });
+            }
             
             //Make a request for each picture searching for the pictures tags
             response.data.photos.photo.forEach(photo => {
@@ -56,9 +73,27 @@ export function fetchPictures (searchTerm, type = 'text', page, newRequest = tru
                             payload: { photo: photo, tags: response.data.photo }
                         });
                     }
+                })
+                .catch(error => {
+                    // handle error
+                    console.log(error);
+                    
+                    dispatch({
+                        type: REQUEST_ERROR,
+                        payload: { error: error.message }
+                    });
                 });
             });
             
+        })
+        .catch(error => {
+            // handle error
+            console.log(error);
+            
+            dispatch({
+                type: REQUEST_ERROR,
+                payload: { error: error.message }
+            });
         });
     }
 }

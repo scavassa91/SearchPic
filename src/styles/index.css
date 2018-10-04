@@ -79,5 +79,14 @@ form {
 .badge-custom {
   border: 2px solid #cfd6d9;
   color: #36465d;
-  margin: 0 0.1rem;
+  margin: 0 0.2rem 0 0;
+}
+
+.error {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 2rem;
+  color: #cfd6d9;
 }
