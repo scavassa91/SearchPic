@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SearchBar from '../containers/search_bar';
+import SearchBar from '../containers/SearchBar';
 
 import SearchPic from '../assets/searchpic.png';
 
