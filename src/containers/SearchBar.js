@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import { fetchPictures } from '../actions';
+import * as actions from '../actions';
 
 class SearchBar extends Component {
 
@@ -109,9 +108,4 @@ class SearchBar extends Component {
     }
 }
 
-// Transform the actions into a props function for this container
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchPictures }, dispatch);
-}
-
-export default connect(null, mapDispatchToProps)(SearchBar);
+export default connect(null, actions)(SearchBar);

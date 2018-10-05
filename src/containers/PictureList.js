@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import { fetchPictures } from '../actions';
+import * as actions from '../actions';
 
 class PictureList extends Component {
 
@@ -135,9 +134,4 @@ function mapStateToProps(state) {
     };
 }
 
-// Transform the actions into a props function for this container
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({fetchPictures}, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PictureList);
+export default connect(mapStateToProps, actions)(PictureList);
